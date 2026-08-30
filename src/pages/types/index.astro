@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { mechanisms } from '../../lib/mechanisms';
+import { publishedListings } from '../../lib/listings';
+const listings = await publishedListings();
+const base = import.meta.env.BASE_URL;
+function count(id: string) {
+  return listings.filter((item) => item.data.mechanism === id).length;
+}
+---
+<Base title="Types" description="Four squirrel-resistant feeder mechanisms.">
+  <h1>Types</h1>
+  <p>Filter by how the feeder actually works, not by the word “proof” on the box.</p>
+  {mechanisms.map((m) => (
+    <section class="card">
+      <h2><a href={`${base}types/${m.id}/`}>{m.label}</a></h2>
+      <p>{m.blurb}</p>
+      <p class="muted">{count(m.id) === 1 ? '1 listing' : `${count(m.id)} listings so far`}.</p>
+    </section>
+  ))}
+</Base>

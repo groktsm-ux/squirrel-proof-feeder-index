@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import { publishedListings } from '../../lib/listings';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const listings = await publishedListings();
+  return listings.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Base title={d.title} description={d.verdict}>
+  <p class="muted">{d.brand} · {d.mechanism} · {d.mount}</p>
+  <Content />
+  <p class="muted">This page is not a lab test unless a source says so.</p>
+</Base>

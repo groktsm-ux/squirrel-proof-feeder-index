@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import { publishedListings } from '../../lib/listings';
+import { mechanisms } from '../../lib/mechanisms';
+const listings = await publishedListings();
+const mechanism = Astro.url.searchParams.get('mechanism');
+const mount = Astro.url.searchParams.get('mount');
+const filtered = listings.filter((item) => {
+  if (mechanism && item.data.mechanism !== mechanism) return false;
+  if (mount && item.data.mount !== mount && item.data.mount !== 'either') return false;
+  return true;
+});
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Listings" description="Published squirrel-resistant feeder listings, filterable by mechanism and mount.">
+  <h1>Listings</h1>
+  <p>One honest page at a time, from primary sources.</p>
+  <div class="filters" aria-label="Mechanism">
+    <a href={`${base}feeders/`} aria-current={mechanism ? undefined : 'page'}>All mechanisms</a>
+    {mechanisms.map((m) => (
+      <a href={`${base}feeders/?mechanism=${m.id}`} aria-current={mechanism === m.id ? 'page' : undefined}>{m.label}</a>
+    ))}
+  </div>
+  <div class="filters" aria-label="Mount">
+    <a href={mechanism ? `${base}feeders/?mechanism=${mechanism}` : `${base}feeders/`} aria-current={mount ? undefined : 'page'}>Any mount</a>
+    {['hang', 'pole', 'either'].map((id) => (
+      <a href={`${base}feeders/?${mechanism ? `mechanism=${mechanism}&` : ''}mount=${id}`} aria-current={mount === id ? 'page' : undefined}>
+        {id === 'either' ? 'Hang or pole' : id[0].toUpperCase() + id.slice(1)}
+      </a>
+    ))}
+  </div>
+  {filtered.length === 0 ? (
+    <p>No listings yet. One honest page at a time, from primary sources.</p>
+  ) : (
+    <ul class="plain">
+      {filtered.map((item) => (
+        <li>
+          <a href={`${base}feeders/${item.data.slug}/`}>{item.data.title}</a>
+          <span class="muted"> — {item.data.mechanism}, {item.data.mount}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+</Base>

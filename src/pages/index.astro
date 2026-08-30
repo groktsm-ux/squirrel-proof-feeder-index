@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import { siteName, tagline, ownerLine } from '../lib/site';
+import { publishedListings } from '../lib/listings';
+import { mechanisms } from '../lib/mechanisms';
+const listings = await publishedListings();
+const base = import.meta.env.BASE_URL;
+---
+<Base title={siteName} description={tagline}>
+  <h1>{siteName}</h1>
+  <p class="lede">{tagline}</p>
+  <p class="muted">{ownerLine}</p>
+  <p>
+    This is a directory, not a store and not a 7-item “best of.” Each listing is one real feeder,
+    written from primary sources, with an honest verdict. We do not invent brands, prices, reviews,
+    ratings, or traffic.
+  </p>
+  <h2>Who it is for</h2>
+  <p>
+    People whose backyard songbird feeder gets raided. You want to know whether a shroud, a motor,
+    a cage, or a pole baffle is the actual mechanism, and who should skip the thing.
+  </p>
+  <h2>How we grade</h2>
+  <ul class="plain">
+    <li>Mechanism first (weight-activated, motorized, caged, pole + baffle).</li>
+    <li>Who it is for, standouts, drawbacks, who should skip, verdict.</li>
+    <li>Sources on every page. If a spec is missing, we write unknown.</li>
+    <li>Cornell FeederWatch: squirrels often get into so-called squirrel-proof feeders. We say resistant.</li>
+  </ul>
+  <h2>Listings</h2>
+  {listings.length === 0 ? (
+    <p>No listings yet. One honest page at a time, from primary sources.</p>
+  ) : (
+    <ul class="plain">
+      {listings.map((item) => (
+        <li>
+          <a href={`${base}feeders/${item.data.slug}/`}>{item.data.title}</a>
+          <span class="muted"> — {item.data.mechanism}, {item.data.mount}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+  <h2>Types</h2>
+  <ul class="plain">
+    {mechanisms.map((m) => (
+      <li><a href={`${base}types/${m.id}/`}>{m.label}</a></li>
+    ))}
+  </ul>
+</Base>

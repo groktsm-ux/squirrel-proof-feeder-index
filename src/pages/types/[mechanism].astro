@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { mechanisms } from '../../lib/mechanisms';
+import { publishedListings } from '../../lib/listings';
+
+export function getStaticPaths() {
+  return mechanisms.map((m) => ({ params: { mechanism: m.id }, props: { meta: m } }));
+}
+
+const { meta } = Astro.props;
+const listings = (await publishedListings()).filter((item) => item.data.mechanism === meta.id);
+const base = import.meta.env.BASE_URL;
+const n = listings.length;
+---
+<Base title={meta.label} description={meta.blurb}>
+  <h1>{meta.label}</h1>
+  <p>{meta.blurb}</p>
+  <p class="muted">{n === 1 ? '1 listing so far' : `${n} listings so far`}.</p>
+  {n === 0 ? (
+    <p>No listings yet in this bucket.</p>
+  ) : (
+    <ul class="plain">
+      {listings.map((item) => (
+        <li><a href={`${base}feeders/${item.data.slug}/`}>{item.data.title}</a></li>
+      ))}
+    </ul>
+  )}
+</Base>

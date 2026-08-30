@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="No page here" description="This URL is not a listing.">
+  <h1>No page here</h1>
+  <p>
+    There is no listing at this address. We do not invent a product to fill the gap.
+    See <a href={import.meta.env.BASE_URL}>home</a> or
+    <a href={`${import.meta.env.BASE_URL}feeders/`}>listings</a>.
+  </p>
+</Base>
