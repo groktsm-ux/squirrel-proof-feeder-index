@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 43127",
-    "build": "astro build",
+    "build": "astro build && cp public/robots.txt dist/robots.txt",
     "preview": "astro preview --host 127.0.0.1 --port 43127"
   },
   "dependencies": {

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://groktsm-ux.github.io/squirrel-proof-feeder-index/sitemap-index.xml
