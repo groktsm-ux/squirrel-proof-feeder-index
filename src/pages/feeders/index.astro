@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
   </div>
   <div class="filters" aria-label="Mount">
     <a href={mechanism ? `${base}feeders/?mechanism=${mechanism}` : `${base}feeders/`} aria-current={mount ? undefined : 'page'}>Any mount</a>
-    {['hang', 'pole', 'either'].map((id) => (
+    {['hang', 'pole', 'either', 'window'].map((id) => (
       <a href={`${base}feeders/?${mechanism ? `mechanism=${mechanism}&` : ''}mount=${id}`} aria-current={mount === id ? 'page' : undefined}>
         {id === 'either' ? 'Hang or pole' : id[0].toUpperCase() + id.slice(1)}
       </a>

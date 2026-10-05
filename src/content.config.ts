@@ -8,7 +8,7 @@ const listings = defineCollection({
     brand: z.string(),
     slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     mechanism: z.enum(['weight-activated', 'motorized', 'caged', 'pole-baffle']),
-    mount: z.enum(['hang', 'pole', 'either']),
+    mount: z.enum(['hang', 'pole', 'either', 'window']),
     seedTypes: z.array(z.string()),
     capacity: z.string(),
     cardinalPerch: z.union([z.boolean(), z.literal('unknown')]),
